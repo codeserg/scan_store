@@ -103,20 +103,45 @@ class Widget(QWidget):
         """)
 
 
-        layout1 = QGridLayout()
-        self.edit1 = QLineEdit()
+        layout1 = QHBoxLayout()
+        layout2 = QGridLayout()
+        self.place = QListView()
         
+        layout1.addLayout(layout2)
+        layout1.addWidget(self.place)
+        
+
         self.our_org = QComboBox()
-        layout1.addWidget(self.our_org)
+        self.ourlabel = QLabel("Наша организация")
         self.load_our_orgs()
         self.our_org.currentIndexChanged.connect(self.on_selection_change)
+        self.client = QComboBox()
+        self.clientlabel = QLabel("Клиент")
+        self.doctype = QComboBox()
+        self.doctypelabel = QLabel("Тип документа")
+        self.docnumber = QLineEdit()
+        self.docnumlabel = QLabel("№ документа")
+        self.docdate = QDateEdit()
+        self.docdatelabel = QLabel("Дата документа")
         
-        button1 =QPushButton("Укажите файл для загрузки")
-        self.logwindow = QListWidget()
-        layout1.addWidget(button1, 2, 1,1,1)
-        layout1.addWidget(self.edit1, 3, 1,1,1)
-        layout1.addWidget(self.logwindow, 4, 1,1,1)
-        button1.clicked.connect(self.pickfile)
+        layout2.setAlignment(Qt.AlignTop)
+
+
+        layout2.addWidget(self.ourlabel,1,1)
+        layout2.addWidget(self.our_org,1,2)
+        
+        layout2.addWidget(self.clientlabel,2,1)
+        layout2.addWidget(self.client,2,2)
+
+        layout2.addWidget(self.doctypelabel,3,1)
+        layout2.addWidget(self.doctype,3,2)
+
+        layout2.addWidget(self.docnumlabel,4,1)
+        layout2.addWidget(self.docnumber,4,2)
+        
+        layout2.addWidget(self.docdatelabel,5,1)
+        layout2.addWidget(self.docdate,5,2)
+        
         self.setLayout(layout1)
 
     
