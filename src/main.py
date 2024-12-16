@@ -103,14 +103,43 @@ class Widget(QWidget):
         """)
 
 
-        layout1 = QHBoxLayout()
-        layout2 = QGridLayout()
-        self.place = QListView()
+        self.panel_tables = QTabWidget()
+        self.layout_stack = QStackedLayout()
+        self.layout_stack.addWidget(self.panel_tables)
+        panel1 = QWidget(self.panel_tables)
+        panel2 = QWidget(self.panel_tables)
+        panel3 = QWidget(self.panel_tables)
+        panel4 = QWidget(self.panel_tables)
         
-        layout1.addLayout(layout2)
-        layout1.addWidget(self.place)
-        
+        layout1= QGridLayout()
+        layout2= QVBoxLayout()
+        layout3= QVBoxLayout()
+        layout4= QVBoxLayout()
+        self.buttons1_layout = QHBoxLayout()
 
+        panel1.setLayout(layout1)
+        panel2.setLayout(layout2)
+        panel3.setLayout(layout3)
+        panel4.setLayout(layout4)
+        
+        self.panel_tables.addTab(panel1,'Документы')
+        self.panel_tables.addTab(panel2,'Клиенты')
+        self.panel_tables.addTab(panel3,'Договора')
+        self.panel_tables.addTab(panel4,'Наши организации')
+        
+        self.buttons1_place = QWidget(panel1)
+        self.buttons1_place.setLayout(self.buttons1_layout)
+
+        button1 = QPushButton("Показать")
+        button2 = QPushButton("Добавить")
+        button3 = QPushButton("Редактировать")
+        button4 = QPushButton("Удалить")
+
+        self.buttons1_layout.addWidget(button1)
+        self.buttons1_layout.addWidget(button2)
+        self.buttons1_layout.addWidget(button3)
+        self.buttons1_layout.addWidget(button4)
+                
         self.our_org = QComboBox()
         self.ourlabel = QLabel("Наша организация")
         self.load_our_orgs()
@@ -124,26 +153,34 @@ class Widget(QWidget):
         self.docdate = QDateEdit()
         self.docdatelabel = QLabel("Дата документа")
         
-        layout2.setAlignment(Qt.AlignTop)
+        self.data_grid = QTableWidget()
+        #layout1.setAlignment(Qt.AlignTop)
+        layout1.setSpacing(10)
 
-
-        layout2.addWidget(self.ourlabel,1,1)
-        layout2.addWidget(self.our_org,1,2)
+        layout1.addWidget(self.ourlabel,0,0)
+        layout1.addWidget(self.our_org,0,1)
         
-        layout2.addWidget(self.clientlabel,2,1)
-        layout2.addWidget(self.client,2,2)
+        layout1.addWidget(self.clientlabel,1,0)
+        layout1.addWidget(self.client,1,1)
 
-        layout2.addWidget(self.doctypelabel,3,1)
-        layout2.addWidget(self.doctype,3,2)
+        layout1.addWidget(self.doctypelabel,2,0)
+        layout1.addWidget(self.doctype,2,1)
 
-        layout2.addWidget(self.docnumlabel,4,1)
-        layout2.addWidget(self.docnumber,4,2)
+        layout1.addWidget(self.docnumlabel,3,0)
+        layout1.addWidget(self.docnumber,3,1)
         
-        layout2.addWidget(self.docdatelabel,5,1)
-        layout2.addWidget(self.docdate,5,2)
+        layout1.addWidget(self.docdatelabel,4,0)
+        layout1.addWidget(self.docdate,4,1)
         
-        self.setLayout(layout1)
+        layout1.addWidget(self.buttons1_place,5,0,2,1)
+        
+        layout1.addWidget(self.data_grid,9,0,2,1)
 
+        self.setLayout(self.layout_stack)
+
+    def show_panel(self, panel_index):
+        self.layout_stack.setCurrentIndex(panel_index)
+        print(panel_index)
     
     def load_our_orgs(self):
         with SessionManager() as s:
@@ -179,4 +216,3 @@ if __name__ == "__main__":
     w = Widget()
     w.show()
     sys.exit(app.exec_())
-
